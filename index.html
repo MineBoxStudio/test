@@ -75,6 +75,14 @@
             border-radius: 4px;
             margin-right: 10px;
         }
+        
+        .status-message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -90,6 +98,8 @@
             <button id="demo-progress">With Progress Bar</button>
             <button id="demo-spinner">With Spinner</button>
             <button id="demo-custom">Custom Theme</button>
+            
+            <div id="status-message" class="status-message"></div>
         </div>
         
         <div class="demo-section">
@@ -125,6 +135,16 @@
             </div>
             
             <div class="color-picker">
+                <label for="logo-animation">Logo Animation:</label>
+                <select id="logo-animation">
+                    <option value="pulse">Pulse</option>
+                    <option value="rotate">Rotate</option>
+                    <option value="bounce">Bounce</option>
+                    <option value="none">None</option>
+                </select>
+            </div>
+            
+            <div class="color-picker">
                 <label>Features:</label>
                 <input type="checkbox" id="show-progress" checked>
                 <label for="show-progress">Progress Bar</label>
@@ -157,6 +177,7 @@ const splash = new SplashScreen({
     duration: 3000,
     showProgressBar: true,
     progressBarColor: '#FFFFFF',
+    logoAnimation: 'pulse', // 'pulse', 'rotate', 'bounce', or 'none'
     onHide: () => {
         console.log('Splash screen hidden');
     }
@@ -174,32 +195,24 @@ splash.updateOptions({
     backgroundColor: '#4CAF50',
     text: 'Almost there...'
 });</code></pre>
-            
-            <h3>4. Available options</h3>
-            <pre><code>// All available options with default values
-{
-    containerId: 'splash-screen-container',  // ID for the container
-    backgroundColor: '#ffffff',              // Background color
-    logoSrc: null,                           // URL to logo image
-    logoWidth: 120,                          // Logo width in pixels
-    logoHeight: 120,                         // Logo height in pixels
-    logoAlt: 'Logo',                         // Alt text for logo
-    text: null,                              // Text to display
-    textColor: '#333333',                    // Text color
-    duration: 2500,                          // Duration in milliseconds
-    fadeOutDuration: 500,                    // Fade out animation duration
-    showProgressBar: false,                  // Show progress bar
-    progressBarColor: '#4CAF50',             // Progress bar color
-    showSpinner: false,                      // Show loading spinner
-    spinnerColor: '#333333',                 // Spinner color
-    onHide: null,                            // Callback after hiding
-    zIndex: 9999                             // Z-index for the splash screen
-}</code></pre>
         </div>
     </div>
 
     <script src="splash-screen.js"></script>
     <script>
+        // Helper function to show status messages
+        function showStatus(message, isError = false) {
+            const statusEl = document.getElementById('status-message');
+            statusEl.textContent = message;
+            statusEl.style.display = 'block';
+            statusEl.style.backgroundColor = isError ? '#ffebee' : '#e8f5e9';
+            statusEl.style.color = isError ? '#c62828' : '#2e7d32';
+            
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 3000);
+        }
+        
         // Color picker event handlers
         document.getElementById('bg-color').addEventListener('input', function() {
             document.getElementById('bg-color-hex').textContent = this.value;
@@ -215,82 +228,139 @@ splash.updateOptions({
         
         // Demo buttons
         document.getElementById('demo-basic').addEventListener('click', function() {
-            new SplashScreen({
-                backgroundColor: '#2196F3',
-                text: 'Basic Splash Screen',
-                textColor: '#FFFFFF',
-                duration: 3000
-            });
+            try {
+                new SplashScreen({
+                    backgroundColor: '#2196F3',
+                    text: 'Basic Splash Screen',
+                    textColor: '#FFFFFF',
+                    duration: 3000,
+                    onHide: () => showStatus('Basic splash screen closed')
+                });
+            } catch (error) {
+                showStatus('Error: ' + error.message, true);
+                console.error(error);
+            }
         });
         
         document.getElementById('demo-logo').addEventListener('click', function() {
-            new SplashScreen({
-                backgroundColor: '#FF5722',
-                logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
-                text: 'Logo Splash Screen',
-                textColor: '#FFFFFF',
-                duration: 3000
-            });
+            try {
+                new SplashScreen({
+                    backgroundColor: '#FF5722',
+                    logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                    text: 'Logo Splash Screen',
+                    textColor: '#FFFFFF',
+                    duration: 3000,
+                    onHide: () => showStatus('Logo splash screen closed')
+                });
+            } catch (error) {
+                showStatus('Error: ' + error.message, true);
+                console.error(error);
+            }
         });
         
         document.getElementById('demo-progress').addEventListener('click', function() {
-            new SplashScreen({
-                backgroundColor: '#4CAF50',
-                logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
-                text: 'Loading...',
-                textColor: '#FFFFFF',
-                duration: 3000,
-                showProgressBar: true,
-                progressBarColor: '#FFFFFF'
-            });
+            try {
+                new SplashScreen({
+                    backgroundColor: '#4CAF50',
+                    logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                    text: 'Loading...',
+                    textColor: '#FFFFFF',
+                    duration: 3000,
+                    showProgressBar: true,
+                    progressBarColor: '#FFFFFF',
+                    onHide: () => showStatus('Progress splash screen closed')
+                });
+            } catch (error) {
+                showStatus('Error: ' + error.message, true);
+                console.error(error);
+            }
         });
         
         document.getElementById('demo-spinner').addEventListener('click', function() {
-            new SplashScreen({
-                backgroundColor: '#9C27B0',
-                logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
-                text: 'Please wait...',
-                textColor: '#FFFFFF',
-                duration: 3000,
-                showSpinner: true,
-                spinnerColor: '#FFFFFF'
-            });
+            try {
+                new SplashScreen({
+                    backgroundColor: '#9C27B0',
+                    logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                    text: 'Please wait...',
+                    textColor: '#FFFFFF',
+                    duration: 3000,
+                    showSpinner: true,
+                    spinnerColor: '#FFFFFF',
+                    onHide: () => showStatus('Spinner splash screen closed')
+                });
+            } catch (error) {
+                showStatus('Error: ' + error.message, true);
+                console.error(error);
+            }
         });
         
         document.getElementById('demo-custom').addEventListener('click', function() {
-            new SplashScreen({
-                backgroundColor: '#212121',
-                logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
-                text: 'Welcome to our app',
-                textColor: '#FFFFFF',
-                duration: 3000,
-                showProgressBar: true,
-                progressBarColor: '#FF5722',
-                showSpinner: true,
-                spinnerColor: '#FF5722'
-            });
+            try {
+                new SplashScreen({
+                    backgroundColor: '#212121',
+                    logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                    text: 'Welcome to our app',
+                    textColor: '#FFFFFF',
+                    duration: 3000,
+                    showProgressBar: true,
+                    progressBarColor: '#FF5722',
+                    showSpinner: true,
+                    spinnerColor: '#FF5722',
+                    logoAnimation: 'rotate',
+                    onHide: () => showStatus('Custom splash screen closed')
+                });
+            } catch (error) {
+                showStatus('Error: ' + error.message, true);
+                console.error(error);
+            }
         });
         
         document.getElementById('apply-custom').addEventListener('click', function() {
-            const bgColor = document.getElementById('bg-color').value;
-            const textColor = document.getElementById('text-color').value;
-            const progressColor = document.getElementById('progress-color').value;
-            const splashText = document.getElementById('splash-text').value;
-            const duration = parseInt(document.getElementById('splash-duration').value);
-            const showProgress = document.getElementById('show-progress').checked;
-            const showSpinner = document.getElementById('show-spinner').checked;
-            
-            new SplashScreen({
-                backgroundColor: bgColor,
-                logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
-                text: splashText,
-                textColor: textColor,
-                duration: duration,
-                showProgressBar: showProgress,
-                progressBarColor: progressColor,
-                showSpinner: showSpinner,
-                spinnerColor: textColor
-            });
+            try {
+                const bgColor = document.getElementById('bg-color').value;
+                const textColor = document.getElementById('text-color').value;
+                const progressColor = document.getElementById('progress-color').value;
+                const splashText = document.getElementById('splash-text').value;
+                const duration = parseInt(document.getElementById('splash-duration').value);
+                const logoAnimation = document.getElementById('logo-animation').value;
+                const showProgress = document.getElementById('show-progress').checked;
+                const showSpinner = document.getElementById('show-spinner').checked;
+                
+                new SplashScreen({
+                    backgroundColor: bgColor,
+                    logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                    text: splashText,
+                    textColor: textColor,
+                    duration: duration,
+                    showProgressBar: showProgress,
+                    progressBarColor: progressColor,
+                    showSpinner: showSpinner,
+                    spinnerColor: textColor,
+                    logoAnimation: logoAnimation,
+                    onHide: () => showStatus('Custom splash screen closed')
+                });
+            } catch (error) {
+                showStatus('Error: ' + error.message, true);
+                console.error(error);
+            }
+        });
+        
+        // Show initial splash on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                new SplashScreen({
+                    backgroundColor: '#FF5722',
+                    logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                    text: 'Welcome to Splash Screen Demo',
+                    textColor: '#FFFFFF',
+                    duration: 2000,
+                    showProgressBar: true,
+                    progressBarColor: '#FFFFFF',
+                    onHide: () => console.log('Initial splash screen closed')
+                });
+            } catch (error) {
+                console.error('Failed to show initial splash screen:', error);
+            }
         });
     </script>
 </body>
