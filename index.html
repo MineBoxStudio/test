@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splash Screen Component Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        .demo-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        code {
+            font-family: monospace;
+        }
+        
+        .color-picker {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .color-picker label {
+            margin-right: 10px;
+            min-width: 150px;
+        }
+        
+        input[type="color"] {
+            margin-right: 10px;
+        }
+        
+        input[type="number"], input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Splash Screen Component Demo</h1>
+        
+        <div class="demo-section">
+            <h2>Basic Demo</h2>
+            <p>Click the buttons below to see different splash screen configurations:</p>
+            
+            <button id="demo-basic">Basic Splash</button>
+            <button id="demo-logo">Logo Splash</button>
+            <button id="demo-progress">With Progress Bar</button>
+            <button id="demo-spinner">With Spinner</button>
+            <button id="demo-custom">Custom Theme</button>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Customization</h2>
+            <p>Customize the splash screen and click "Apply" to see the changes:</p>
+            
+            <div class="color-picker">
+                <label for="bg-color">Background Color:</label>
+                <input type="color" id="bg-color" value="#FF5722">
+                <span id="bg-color-hex">#FF5722</span>
+            </div>
+            
+            <div class="color-picker">
+                <label for="text-color">Text Color:</label>
+                <input type="color" id="text-color" value="#FFFFFF">
+                <span id="text-color-hex">#FFFFFF</span>
+            </div>
+            
+            <div class="color-picker">
+                <label for="progress-color">Progress Bar Color:</label>
+                <input type="color" id="progress-color" value="#FFFFFF">
+                <span id="progress-color-hex">#FFFFFF</span>
+            </div>
+            
+            <div class="color-picker">
+                <label for="splash-text">Splash Text:</label>
+                <input type="text" id="splash-text" value="Loading..." style="width: 200px;">
+            </div>
+            
+            <div class="color-picker">
+                <label for="splash-duration">Duration (ms):</label>
+                <input type="number" id="splash-duration" value="3000" min="500" step="500">
+            </div>
+            
+            <div class="color-picker">
+                <label>Features:</label>
+                <input type="checkbox" id="show-progress" checked>
+                <label for="show-progress">Progress Bar</label>
+                <input type="checkbox" id="show-spinner">
+                <label for="show-spinner">Spinner</label>
+            </div>
+            
+            <button id="apply-custom">Apply Custom Settings</button>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Integration Guide</h2>
+            <p>To integrate the splash screen into your project, follow these steps:</p>
+            
+            <h3>1. Include the script</h3>
+            <pre><code>&lt;script src="splash-screen.js"&gt;&lt;/script&gt;</code></pre>
+            
+            <h3>2. Initialize the splash screen</h3>
+            <pre><code>// Basic usage
+const splash = new SplashScreen();
+
+// With custom options
+const splash = new SplashScreen({
+    backgroundColor: '#FF5722',
+    logoSrc: 'path/to/logo.png',
+    logoWidth: 150,
+    logoHeight: 150,
+    text: 'Loading...',
+    textColor: '#FFFFFF',
+    duration: 3000,
+    showProgressBar: true,
+    progressBarColor: '#FFFFFF',
+    onHide: () => {
+        console.log('Splash screen hidden');
+    }
+});</code></pre>
+            
+            <h3>3. Control methods</h3>
+            <pre><code>// Hide the splash screen manually
+splash.hide();
+
+// Show the splash screen again
+splash.show();
+
+// Update options
+splash.updateOptions({
+    backgroundColor: '#4CAF50',
+    text: 'Almost there...'
+});</code></pre>
+            
+            <h3>4. Available options</h3>
+            <pre><code>// All available options with default values
+{
+    containerId: 'splash-screen-container',  // ID for the container
+    backgroundColor: '#ffffff',              // Background color
+    logoSrc: null,                           // URL to logo image
+    logoWidth: 120,                          // Logo width in pixels
+    logoHeight: 120,                         // Logo height in pixels
+    logoAlt: 'Logo',                         // Alt text for logo
+    text: null,                              // Text to display
+    textColor: '#333333',                    // Text color
+    duration: 2500,                          // Duration in milliseconds
+    fadeOutDuration: 500,                    // Fade out animation duration
+    showProgressBar: false,                  // Show progress bar
+    progressBarColor: '#4CAF50',             // Progress bar color
+    showSpinner: false,                      // Show loading spinner
+    spinnerColor: '#333333',                 // Spinner color
+    onHide: null,                            // Callback after hiding
+    zIndex: 9999                             // Z-index for the splash screen
+}</code></pre>
+        </div>
+    </div>
+
+    <script src="splash-screen.js"></script>
+    <script>
+        // Color picker event handlers
+        document.getElementById('bg-color').addEventListener('input', function() {
+            document.getElementById('bg-color-hex').textContent = this.value;
+        });
+        
+        document.getElementById('text-color').addEventListener('input', function() {
+            document.getElementById('text-color-hex').textContent = this.value;
+        });
+        
+        document.getElementById('progress-color').addEventListener('input', function() {
+            document.getElementById('progress-color-hex').textContent = this.value;
+        });
+        
+        // Demo buttons
+        document.getElementById('demo-basic').addEventListener('click', function() {
+            new SplashScreen({
+                backgroundColor: '#2196F3',
+                text: 'Basic Splash Screen',
+                textColor: '#FFFFFF',
+                duration: 3000
+            });
+        });
+        
+        document.getElementById('demo-logo').addEventListener('click', function() {
+            new SplashScreen({
+                backgroundColor: '#FF5722',
+                logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                text: 'Logo Splash Screen',
+                textColor: '#FFFFFF',
+                duration: 3000
+            });
+        });
+        
+        document.getElementById('demo-progress').addEventListener('click', function() {
+            new SplashScreen({
+                backgroundColor: '#4CAF50',
+                logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                text: 'Loading...',
+                textColor: '#FFFFFF',
+                duration: 3000,
+                showProgressBar: true,
+                progressBarColor: '#FFFFFF'
+            });
+        });
+        
+        document.getElementById('demo-spinner').addEventListener('click', function() {
+            new SplashScreen({
+                backgroundColor: '#9C27B0',
+                logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                text: 'Please wait...',
+                textColor: '#FFFFFF',
+                duration: 3000,
+                showSpinner: true,
+                spinnerColor: '#FFFFFF'
+            });
+        });
+        
+        document.getElementById('demo-custom').addEventListener('click', function() {
+            new SplashScreen({
+                backgroundColor: '#212121',
+                logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                text: 'Welcome to our app',
+                textColor: '#FFFFFF',
+                duration: 3000,
+                showProgressBar: true,
+                progressBarColor: '#FF5722',
+                showSpinner: true,
+                spinnerColor: '#FF5722'
+            });
+        });
+        
+        document.getElementById('apply-custom').addEventListener('click', function() {
+            const bgColor = document.getElementById('bg-color').value;
+            const textColor = document.getElementById('text-color').value;
+            const progressColor = document.getElementById('progress-color').value;
+            const splashText = document.getElementById('splash-text').value;
+            const duration = parseInt(document.getElementById('splash-duration').value);
+            const showProgress = document.getElementById('show-progress').checked;
+            const showSpinner = document.getElementById('show-spinner').checked;
+            
+            new SplashScreen({
+                backgroundColor: bgColor,
+                logoSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/server-icon2-3wvcH3nMal8KTRJkIJsCPrsTjmxoAP.png',
+                text: splashText,
+                textColor: textColor,
+                duration: duration,
+                showProgressBar: showProgress,
+                progressBarColor: progressColor,
+                showSpinner: showSpinner,
+                spinnerColor: textColor
+            });
+        });
+    </script>
+</body>
+</html>
